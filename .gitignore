@@ -34,3 +34,5 @@ bin/
 .vscode/
 .idea/
 *.swp
+/.github/workflows/gitee-sync.yml
+/.github/workflows/go.yml
