@@ -13,7 +13,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	logrus "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"

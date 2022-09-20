@@ -1,51 +1,45 @@
-# Kratos Project Template
+### Customized logging framework
 
-## Install Kratos
-```
-go install github.com/go-kratos/kratos/cmd/kratos/v2@latest
-```
-## Create a service
-```
-# Create a template project
-kratos new server
+[Select Logging Framework](https://github.com/go-kratos/kratos/tree/main/contrib/log)
 
-cd server
-# Add a proto template
-kratos proto add api/server/server.proto
-# Generate the proto code
-kratos proto client api/server/server.proto
-# Generate the source code of service by proto file
-kratos proto server api/server/server.proto -t internal/service
 
-go generate ./...
-go build -o ./bin/ ./...
-./bin/server -conf ./configs
-```
-## Generate other auxiliary files by Makefile
-```
-# Download and update dependencies
-make init
-# Generate API files (include: pb.go, http, grpc, validate, swagger) by proto file
-make api
-# Generate all files
-make all
-```
-## Automated Initialization (wire)
-```
-# install wire
-go get github.com/google/wire/cmd/wire
+#### using logrus
 
-# generate wire
-cd cmd/server
-wire
-```
+````go
+import (
+"flag"
+logdef "github.com/go-kratos/kratos/contrib/log/logrus/v2"
+"github.com/go-kratos/kratos/v2/middleware/tracing"
+"os"
 
-## Docker
-```bash
-# build
-docker build -t <your-docker-image-name> .
+"github.com/go-kratos/kratos-layout/internal/conf"
+"github.com/go-kratos/kratos/v2"
+"github.com/go-kratos/kratos/v2/config"
+"github.com/go-kratos/kratos/v2/config/file"
+"github.com/go-kratos/kratos/v2/log"
+"github.com/go-kratos/kratos/v2/transport/grpc"
+"github.com/go-kratos/kratos/v2/transport/http"
+"github.com/sirupsen/logrus"
+)
 
-# run
-docker run --rm -p 8000:8000 -p 9000:9000 -v </path/to/your/configs>:/data/conf <your-docker-image-name>
-```
 
+func main(){
+    logFmt := logrus.New()
+    logFmt.Formatter = &logrus.JSONFormatter{}
+    logFmt.SetLevel(logrus.InfoLevel)
+    logger := logdef.NewLogger(logFmt)
+    logger = log.With(
+        logger,
+        "ts", log.DefaultTimestamp,
+        "caller", log.DefaultCaller,
+        "service.id", id,
+        "service.name", Name,
+        "service.version", Version,
+        "trace.id", tracing.TraceID(),
+        "span.id", tracing.SpanID(),
+    )
+    
+    app, cleanup, err := wireApp(bc.Server, bc.Data, logger)
+}
+
+````
