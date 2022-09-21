@@ -11,6 +11,8 @@ type GreeterService struct {
 	v1.UnimplementedGreeterServer
 
 	uc *biz.GreeterUsecase
+
+	client v1.GreeterClient
 }
 
 type Detail struct {
@@ -18,8 +20,8 @@ type Detail struct {
 }
 
 // NewGreeterService new a greeter service.
-func NewGreeterService(uc *biz.GreeterUsecase) *GreeterService {
-	return &GreeterService{uc: uc}
+func NewGreeterService(uc *biz.GreeterUsecase, client v1.GreeterClient) *GreeterService {
+	return &GreeterService{uc: uc, client: client}
 }
 
 // SayHello implements helloworld.GreeterServer.
