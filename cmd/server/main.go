@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	logdef "github.com/go-kratos/kratos/contrib/log/logrus/v2"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"os"
 
 	"github.com/go-kratos/kratos-layout/internal/conf"
@@ -56,11 +55,6 @@ func main() {
 	logger = log.With(logger,
 		"ts", log.DefaultTimestamp,
 		"caller", log.DefaultCaller,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
-		"trace.id", tracing.TraceID(),
-		"span.id", tracing.SpanID(),
 	)
 	c := config.New(
 		config.WithSource(
