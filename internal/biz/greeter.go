@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"github.com/go-kratos/kratos/v2/transport/http"
 
 	v1 "github.com/go-kratos/kratos-layout/api/helloworld/v1"
 	"github.com/go-kratos/kratos/v2/errors"
@@ -32,6 +33,10 @@ type GreeterUsecase struct {
 	repo GreeterRepo
 	log  *log.Helper
 }
+type HttpClientUsecase struct {
+	client http.Client
+	log    *log.Helper
+}
 
 // NewGreeterUsecase new a Greeter usecase.
 func NewGreeterUsecase(repo GreeterRepo, logger log.Logger) *GreeterUsecase {
@@ -43,4 +48,8 @@ func (uc *GreeterUsecase) CreateGreeter(ctx context.Context, g *Greeter) (*Greet
 	uc.log.WithContext(ctx).Infof("CreateGreeter: %v", g.Hello)
 	//return uc.repo.Save(ctx, g)
 	return nil, ErrUserNotFound
+}
+
+func NewHttpClient(client http.Client, logger log.Logger) *HttpClientUsecase {
+	return &HttpClientUsecase{client, log.NewHelper(logger)}
 }
